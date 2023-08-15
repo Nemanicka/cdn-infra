@@ -1,0 +1,53 @@
+// Define ACLs for US and UA regions
+//acl "us" {
+//    geoip country US;
+//};
+
+//acl "ua" {
+//    geoip country UA;
+//};
+
+//view "us-view" {
+//    match-clients { "us"; };
+//    recursion yes;
+
+    zone "perfecthw.com.ua" {
+        type master;
+        file "/var/cache/bind/db.perfecthw.com.ua";
+    };
+//};
+
+//view "ua-view" {
+//    match-clients { "ua"; };
+//    recursion yes;
+
+//    zone "perfecthw.com.ua" {
+//        type master;
+//        file "/var/cache/bind/db.perfecthw.com.ua";
+//    };
+//};
+
+// Default view for other regions
+//view "default-view" {
+//    match-clients { any; };
+//    recursion yes;
+//
+//    zone "example.com" {
+//        type master;
+//        file "/var/named/default/example.com.zone";
+//    };
+//
+    // Additional zones for other regions
+//};
+
+
+
+//zone "perfecthw.com.ua" {
+//        type forward;
+//        forwarders { 127.0.0.10; 127.0.0.11; };
+//};
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+

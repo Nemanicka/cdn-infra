@@ -1,0 +1,118 @@
+version: '3'
+
+services:
+  bind9:
+    #image: internetsystemsconsortium/bind9:9.18
+    image: sameersbn/bind
+    container_name: bind9
+    #restart: always
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    volumes:
+      - ./bind:/data/bind:rw
+      - ./cache:/var/cache/bind
+      - ./bind/geoip:/usr/share/GeoIP
+  nginx-lb-1:
+    image: emcniece/nginx-cache-purge
+    container_name: nginx-lb-1
+    volumes:
+            - ./nginx-lb-1/conf/:/etc/nginx/conf.d:ro
+            - ./nginx-lb-1/www/:/static/:ro
+            - ./nginx-lb-1/cache/:/var/cache/dummycache:rw
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    network_mode: host
+
+  nginx-lb-2:
+    image: nemanicka/nginx-least-time-fork
+    container_name: nginx-lb-2
+    volumes:
+            - ./nginx-lb-2/error.log:/usr/local/nginx/logs/error.log
+            - ./nginx-1.15.10/conf/mime.types:/etc/nginx/mime.types:ro
+            - ./nginx-lb-2/nginx.conf:/usr/local/nginx/conf/nginx.conf:ro
+            - ./nginx-lb-2/www/:/static/:ro
+            - ./nginx-lb-2/cache/:/var/cache/dummycache:rw
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    network_mode: host
+
+#  lb-3:
+#    build:
+#        context: nemanicka/hop-balance
+#    container_name: nginx-lb-3
+#    network_mode: host
+
+  nginx-node-1:
+    image: emcniece/nginx-cache-purge
+    container_name: nginx-node-1
+    volumes:
+            - ./nginx-node-1/conf/:/etc/nginx/conf.d:ro
+            - ./nginx-node-1/www/:/static/:ro
+            - ./nginx-node-1/cache/:/var/cache/dummycache:rw
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    network_mode: host
+
+  nginx-node-2:
+    image: emcniece/nginx-cache-purge
+    container_name: nginx-node-2
+    volumes:
+            - ./nginx-node-2/conf/:/etc/nginx/conf.d:ro
+            - ./nginx-node-2/www/:/static/:ro
+            - ./nginx-node-2/cache/:/var/cache/dummycache:rw
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    network_mode: host
+
+  nginx-node-3:
+    image: emcniece/nginx-cache-purge
+    container_name: nginx-node-3
+    volumes:
+            - ./nginx-node-3/conf/:/etc/nginx/conf.d:ro
+            - ./nginx-node-3/www/:/static/:ro
+            - ./nginx-node-3/cache/:/var/cache/dummycache:rw
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    network_mode: host
+  
+  nginx-node-4:
+    image: emcniece/nginx-cache-purge
+    container_name: nginx-node-4
+    volumes:
+            - ./nginx-node-4/conf/:/etc/nginx/conf.d:ro
+            - ./nginx-node-4/www/:/static/:ro
+            - ./nginx-node-4/cache/:/var/cache/dummycache:rw
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    network_mode: host
